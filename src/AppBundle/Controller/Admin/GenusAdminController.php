@@ -5,6 +5,8 @@ namespace AppBundle\Controller\Admin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use AppBundle\Form\GenusFormType;
+
 /**
  * @Route("/admin")
  */
@@ -13,8 +15,8 @@ class GenusAdminController extends Controller
     /**
      * @Route("/genus", name="admin_genus_list")
      */
-    public function indexAction()
-    {
+    public function indexAction(){
+
         $genuses = $this->getDoctrine()
             ->getRepository('AppBundle:Genus')
             ->findAll();
@@ -27,8 +29,13 @@ class GenusAdminController extends Controller
     /**
      * @Route("/genus/new", name="admin_genus_new")
      */
-    public function newAction()
-    {
-        // let's go to work!
+    public function newAction(){
+
+        $form = $this->createForm(GenusFormType::class);
+        
+        return $this->render('admin/genus/new.html.twig',[
+            'genusForm'=>$form->createView()
+            ]
+        );
     }
 }
